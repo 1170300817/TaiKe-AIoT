@@ -7,7 +7,7 @@
 
 import logging
 
-from IoT_device.client import IoTClisentConfig
+from IoT_device.client import IoTClientConfig
 from IoT_device.client import IotClient
 
 

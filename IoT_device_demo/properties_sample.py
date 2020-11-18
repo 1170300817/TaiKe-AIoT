@@ -5,6 +5,7 @@
 import time
 import logging
 import json
+import random
 
 from IoT_device.client.IoT_client_config import IoTClientConfig
 from IoT_device.client.IoT_client import IotClient
@@ -14,15 +15,16 @@ from IoT_device.request.services_properties import ServicesProperties
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+
 def run():
     # 客户端配置
     client_cfg = IoTClientConfig(server_ip='iot-mqtts.cn-north-4.myhuaweicloud.com',
-                                 device_id='5ebac693352cfb02c567ec88_abcdefg1234',
-                                 secret='yourSecret', is_ssl=True)
+                                 device_id='5f7d755424e3a102c33d1256_test1',
+                                 secret='12345678', is_ssl=True)
 
     # 创建设备
     iot_client = IotClient(client_cfg)
-    iot_client.connect() # 建立连接
+    iot_client.connect()  # 建立连接
 
     # 自定义callback
     def property_set_callback(request_id, payload):
@@ -60,13 +62,14 @@ def run():
     while True:
         # 按照产品模型设置属性
         service_property = ServicesProperties()
-        service_property.add_service_property(service_id="Battery", property='batteryLevel', value=1)
-        service_property.add_service_property(service_id="Battery", property='batteryThreshold', value=2)
-        service_property.add_service_property(service_id="Connectivity", property='rsrp', value=3)
-        service_property.add_service_property(service_id="Connectivity", property='cellId', value=4)
-        service_property.add_service_property(service_id="WaterMeter", property='temperature', value=90)
+        service_property.add_service_property(service_id="sensorData", property='time',
+                                              value=time.strftime("%Y-%m-%d_%H:%M:%S", time.localtime()))
+        service_property.add_service_property(service_id="sensorData", property='temp', value=random.randint(0, 100))
+        service_property.add_service_property(service_id="sensorData", property='humid', value=random.randint(0, 100))
+        service_property.add_service_property(service_id="sensorData", property='light', value=random.randint(0, 100))
+        service_property.add_service_property(service_id="sensorData", property='co2', value=random.randint(0, 100))
         iot_client.report_properties(service_properties=service_property.service_property, qos=1)
-        time.sleep(10)
+        time.sleep(1)
 
 if __name__ == '__main__':
     run()
