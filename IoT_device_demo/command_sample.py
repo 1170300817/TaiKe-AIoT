@@ -28,6 +28,8 @@ def run():
         logger.info(('Command, service id = ', command.service_id))
         logger.info(('Command, command name: ', command.command_name))
         logger.info(('Command. paras: ', command.paras))
+        print(command)
+        print(command.paras)
         # result_code:设置为零相应命令下发成功，为 1 下发命令失败
         iot_client.respond_command(request_id, result_code=0)
         print('------------------this is myself callback')
