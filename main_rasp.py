@@ -48,13 +48,15 @@ def run():
         if command.command_name == 'take_a_pic':
             os.system('sudo python3 OBS_pic_up.py')
 
+    # 设置响应命令的回调
+    iot_client.set_command_callback(command_callback)
     iot_client.start()  # 线程启动
 
     # 第一次上传数据
     serial_get()
     huawei_report(iot_client)
     while True:
-        if time.localtime().tm_min % 5 == 0:
+        if time.localtime().tm_min % 1 == 0:
             serial_get()
             huawei_report(iot_client)
             time.sleep(60)

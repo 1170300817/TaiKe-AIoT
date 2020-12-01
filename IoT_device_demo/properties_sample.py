@@ -64,7 +64,7 @@ def run():
         service_property = ServicesProperties()
         service_property.add_service_property(service_id="sensorData", property='time',
                                               value=time.strftime("%Y-%m-%d_%H:%M:%S", time.localtime()))
-        service_property.add_service_property(service_id="sensorData", property='temp', value=random.randint(0, 100))
+        service_property.add_service_property(service_id="sensorData", property='temp', value=27)
         service_property.add_service_property(service_id="sensorData", property='humid', value=random.randint(0, 100))
         service_property.add_service_property(service_id="sensorData", property='light', value=random.randint(0, 100))
         service_property.add_service_property(service_id="sensorData", property='co2', value=random.randint(0, 100))
