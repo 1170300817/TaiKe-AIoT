@@ -1,6 +1,7 @@
 import requests
 import base64
 import json
+import cv2
 
 # 百度API相关信息
 url_token = "https://aip.baidubce.com/oauth/2.0/token"
@@ -26,3 +27,17 @@ data = {'image': pic, 'threshold': 0.9}
 response = requests.post(url, params=params, headers=headers, data=json.dumps(data))
 print(json.loads(response.content))
 results_arr = json.loads(response.content)["results"]
+
+im = cv2.imread(filename)
+for loc in results_arr:
+    sx1 = loc["location"]["left"] - 1
+    sy1 = loc["location"]["top"] - 1
+    sx2 = loc["location"]["left"] + loc["location"]["width"]
+    sy2 = loc["location"]["top"] + loc["location"]["height"]
+    cv2.rectangle(im, (int(sx1), int(sy1)), (int(sx2), int(sy2)), (0, 255, 0), 3)
+    text = "PER:" + loc["name"] + "  SCORE:" + format(loc["score"], '.4f')
+    cv2.putText(im, text, (sx1, sy2 + 25), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2, cv2.LINE_AA)
+
+new_name = "new" + filename
+cv2.imwrite(new_name, im, [int(cv2.IMWRITE_JPEG_QUALITY), 100])
+
